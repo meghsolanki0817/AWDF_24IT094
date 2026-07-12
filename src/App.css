@@ -1,0 +1,263 @@
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(circle at top, rgba(37, 99, 235, 0.12), transparent 35%), #0b1120;
+  color: #e2e8f0;
+}
+
+.main-content {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 40px 0 80px;
+  display: grid;
+  gap: 48px;
+}
+
+.section {
+  background: rgba(15, 23, 42, 0.86);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.24);
+  padding: 32px;
+  backdrop-filter: blur(12px);
+  animation: fadeIn 0.9s ease both;
+}
+
+.section-heading {
+  margin-bottom: 24px;
+}
+
+.section-label {
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.8rem;
+  color: #8b95a1;
+  margin-bottom: 10px;
+}
+
+.section h2 {
+  font-size: clamp(2rem, 2.2vw, 2.6rem);
+  margin: 0;
+}
+
+.about-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.about-card,
+.skill-pill,
+.project-card {
+  background: #111827;
+  border-radius: 18px;
+  padding: 24px;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.about-card:hover,
+.skill-pill:hover,
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(37, 99, 235, 0.35);
+  box-shadow: 0 18px 40px rgba(37, 99, 235, 0.12);
+}
+
+.about-card h3 {
+  margin: 0 0 10px;
+  color: #93c5fd;
+}
+
+.about-card p {
+  margin: 0;
+  line-height: 1.7;
+  color: #cbd5e1;
+}
+
+.about-wide {
+  grid-column: span 2;
+}
+
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.skill-pill {
+  background: #1f2937;
+  color: #dbeafe;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 999px;
+  padding: 14px 20px;
+  font-weight: 600;
+}
+
+.projects-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.project-card h3 {
+  margin: 0 0 14px;
+  font-size: 1.2rem;
+  color: #bfdbfe;
+}
+
+.project-card p {
+  margin: 0 0 16px;
+  color: #cbd5e1;
+  line-height: 1.75;
+}
+
+.project-tech {
+  display: inline-block;
+  color: #93c5fd;
+  font-weight: 600;
+}
+
+.header-section {
+  padding: 64px 0 52px;
+  color: #f8fafc;
+}
+
+.header-content {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.subheading {
+  margin: 0;
+  font-size: 0.95rem;
+  letter-spacing: 0.18em;
+  color: #c7d2fe;
+}
+
+.header-content h1 {
+  font-size: clamp(2.6rem, 4vw, 4rem);
+  margin: 0;
+}
+
+.highlight-text {
+  font-size: 1rem;
+  color: #dbeafe;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(5, 12, 27, 0.95);
+  border-bottom: 1px solid rgba(71, 85, 105, 0.12);
+}
+
+.nav-container {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0;
+}
+
+.brand {
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.nav-list {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  color: #cbd5e1;
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 999px;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background: rgba(37, 99, 235, 0.14);
+  color: #eff6ff;
+}
+
+.footer {
+  border-top: 1px solid rgba(148, 163, 184, 0.15);
+  background: #020617;
+  color: #94a3b8;
+  padding: 28px 0;
+}
+
+.footer-content {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-title {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  color: #e2e8f0;
+}
+
+.footer a {
+  color: #93c5fd;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .about-grid,
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-wide {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 720px) {
+  .nav-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-list {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .main-content {
+    padding-top: 20px;
+    gap: 30px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
