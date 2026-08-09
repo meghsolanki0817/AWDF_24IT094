@@ -4,16 +4,22 @@
   "version": "1.0.0",
   "description": "Student Portfolio - Megh Solanki (24IT094)",
   "scripts": {
+    "start": "vite",
     "dev": "vite",
+    "dev:all": "concurrently \"npm run start:server\" \"npm run dev\"",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start:server": "node server/index.js",
+    "install-server": "cd server && npm install"
   },
   "dependencies": {
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.18.1"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.1",
-    "vite": "^5.4.1"
+    "@vitejs/plugin-react": "^6.0.3",
+    "vite": "^8.1.5",
+    "concurrently": "^8.2.0"
   }
 }
