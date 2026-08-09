@@ -1,23 +1,15 @@
 # Task Manager API
 
-Task Manager backend for Practical 5 using **Express, MongoDB, and Mongoose**.
+Task Manager backend for Practical 4 using **Express** and an in-memory task list.
 
-This server implements a Mongoose schema with required fields, defaults, enum validation, and a pre-save hook to trim the task title.
+This server implements a simple REST API with logging middleware, content-type validation, and global error handling.
 
 Install and run:
 
 ```powershell
 cd server
 npm install
-copy .env.example .env
-# edit .env if needed
 npm start
-```
-
-For Docker-based development:
-
-```powershell
-docker-compose up --build
 ```
 
 Endpoints:
