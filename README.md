@@ -54,6 +54,49 @@ npm run dev
 
 Then open the local Vite URL shown in the terminal.
 
+## Running Practical 5 (Backend with MongoDB)
+
+You can run the backend in two ways: locally with a local MongoDB instance, or via Docker Compose (recommended for convenience).
+
+Local (no Docker)
+
+1. Install dependencies:
+```powershell
+cd server
+npm install
+```
+2. Create a `.env` file in `server/` (you can copy from `.env.example`) and set `MONGO_URI`.
+3. Start MongoDB locally (or use Atlas) and then run:
+```powershell
+npm start
+```
+
+Docker (recommended)
+
+If you have Docker installed, run both MongoDB and the server with one command from the project root:
+
+```powershell
+docker-compose up --build
+```
+
+This starts MongoDB on port `27017` and the server on port `3000` (accessible at `http://localhost:3000`).
+
+Frontend + Combined dev
+
+To run the frontend (Vite) and backend concurrently during development:
+
+```powershell
+# install root deps
+npm install
+# install server deps
+cd server
+npm install
+cd ..
+# run both
+npm run dev:all
+```
+
+
 ## Practical 3 API Integration
 
 - The `Projects` page now fetches repositories from GitHub using the public endpoint for `meghsolanki`.
