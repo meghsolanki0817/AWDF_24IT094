@@ -1,47 +1,59 @@
 const express = require('express');
 const router = express.Router();
+const Task = require('../models/Task');
 
-let tasks = [];
-let nextId = 1;
-
-router.get('/', (req, res) => {
-  res.status(200).json(tasks);
+router.get('/', async (req, res, next) => {
+  try {
+    const tasks = await Task.find().sort({ createdAt: -1 });
+    res.status(200).json(tasks);
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.get('/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const task = tasks.find(t => t.id === id);
-  if (!task) return res.status(404).json({ error: 'Task not found' });
-  res.status(200).json(task);
+router.get('/:id', async (req, res, next) => {
+  try {
+    const task = await Task.findById(req.params.id);
+    if (!task) return res.status(404).json({ error: 'Task not found' });
+    res.status(200).json(task);
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.post('/', (req, res) => {
-  const { title, description, completed } = req.body;
-  if (!title) return res.status(400).json({ error: 'Title is required' });
-
-  const task = { id: nextId++, title, description: description || '', completed: !!completed };
-  tasks.push(task);
-  res.status(201).json(task);
+router.post('/', async (req, res, next) => {
+  try {
+    const { title, description, completed, priority } = req.body;
+    const task = await Task.create({ title, description, completed, priority });
+    res.status(201).json(task);
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.put('/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const idx = tasks.findIndex(t => t.id === id);
-  if (idx === -1) return res.status(404).json({ error: 'Task not found' });
-
-  const { title, description, completed } = req.body;
-  if (!title) return res.status(400).json({ error: 'Title is required' });
-
-  tasks[idx] = { id, title, description: description || '', completed: !!completed };
-  res.status(200).json(tasks[idx]);
+router.put('/:id', async (req, res, next) => {
+  try {
+    const { title, description, completed, priority } = req.body;
+    const task = await Task.findByIdAndUpdate(
+      req.params.id,
+      { title, description, completed, priority },
+      { new: true, runValidators: true }
+    );
+    if (!task) return res.status(404).json({ error: 'Task not found' });
+    res.status(200).json(task);
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.delete('/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const idx = tasks.findIndex(t => t.id === id);
-  if (idx === -1) return res.status(404).json({ error: 'Task not found' });
-  const deleted = tasks.splice(idx, 1)[0];
-  res.status(200).json(deleted);
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const task = await Task.findByIdAndDelete(req.params.id);
+    if (!task) return res.status(404).json({ error: 'Task not found' });
+    res.status(200).json(task);
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

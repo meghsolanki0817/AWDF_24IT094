@@ -4,6 +4,8 @@ const logger = require('./middleware/logger');
 const validateContentType = require('./middleware/validateContentType');
 const errorHandler = require('./middleware/errorHandler');
 const cors = require('cors');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -29,3 +31,10 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`Task Manager API listening on port ${PORT}`);
 });
+
+// Connect to MongoDB
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/tasks_db';
+mongoose
+  .connect(MONGO_URI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
