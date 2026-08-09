@@ -1,6 +1,6 @@
-# Student Portfolio - Megh Solanki (24IT094)
+# Student Portfolio + Task Manager API (24IT094)
 
-A modern single-page portfolio website built with **React** and **Vite** for a college lab assignment.
+A modern single-page portfolio website built with **React** and **Vite** plus a **Practical 5 backend** using **Express, MongoDB, and Mongoose**.
 
 ## Project Overview
 
@@ -109,6 +109,7 @@ npm run dev:all
 - This project uses functional React components and props.
 - The skills list is rendered dynamically via props and `map()`.
 - Styling is done with custom CSS only.
+- The backend uses Mongoose schema validation, enums, and MongoDB persistence.
 
 ## GitHub Repository Setup
 
