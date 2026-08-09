@@ -1,0 +1,38 @@
+name: npm audit
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'
+  workflow_dispatch: {}
+
+jobs:
+  audit-root:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install root deps
+        run: npm ci
+      - name: Run npm audit (root)
+        run: npm audit --audit-level=high
+
+  audit-server:
+    runs-on: ubuntu-latest
+    needs: audit-root
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install server deps
+        run: |
+          cd server
+          npm ci
+      - name: Run npm audit (server)
+        run: |
+          cd server
+          npm audit --audit-level=high
