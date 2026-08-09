@@ -1,9 +1,15 @@
+const path = require('path');
 const express = require('express');
 const tasksRouter = require('./routes/tasks');
 const logger = require('./middleware/logger');
 const validateContentType = require('./middleware/validateContentType');
 const errorHandler = require('./middleware/errorHandler');
 const cors = require('cors');
+
+// Load env from server/.env only when running from server folder
+if (process.cwd().includes(path.resolve(__dirname))) {
+  require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
