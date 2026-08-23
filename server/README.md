@@ -9,6 +9,7 @@ Create a `server/.env` file first:
 ```env
 MONGO_URI=mongodb://127.0.0.1:27017/task-manager
 PORT=3000
+JWT_SECRET=replace-with-a-long-random-secret
 ```
 
 Install and run:
@@ -31,5 +32,9 @@ Notes:
 
 - `title` is required and trimmed before save.
 - Tasks are persisted in MongoDB and sorted newest first.
+- `POST /auth/register` hashes passwords with bcrypt and returns a JWT.
+- `POST /auth/login` verifies the password and returns a one-hour JWT.
+- `GET /auth/me` and all `/tasks` routes require `Authorization: Bearer <token>`.
+- Task POST and PUT requests pass through server-side field validation before reaching the controller.
 - Mongoose validation errors are returned as structured JSON.
 - Invalid task IDs return a 400 error and missing tasks return 404.

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function NavBar({ onThemeToggle, isDarkMode }) {
@@ -8,11 +8,23 @@ function NavBar({ onThemeToggle, isDarkMode }) {
     { name: 'Skills', path: '/skills' },
     { name: 'Projects', path: '/projects' },
     { name: 'Contact', path: '/contact' },
-    { name: 'Tasks', path: '/tasks' }
+    { name: 'Tasks', path: '/tasks' },
+    { name: 'Login', path: '/login' }
   ];
   
   const [activeItem, setActiveItem] = useState('Home');
   const [searchInput, setSearchInput] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(Boolean(localStorage.getItem('taskToken')));
+
+  useEffect(() => {
+    const updateAuth = () => setIsAuthenticated(Boolean(localStorage.getItem('taskToken')));
+    window.addEventListener('auth-changed', updateAuth);
+    window.addEventListener('auth-expired', updateAuth);
+    return () => {
+      window.removeEventListener('auth-changed', updateAuth);
+      window.removeEventListener('auth-expired', updateAuth);
+    };
+  });
 
   const handleSearchChange = (e) => {
     setSearchInput(e.target.value);
@@ -50,6 +62,7 @@ function NavBar({ onThemeToggle, isDarkMode }) {
           >
             {isDarkMode ? '☀️' : '🌙'}
           </button>
+          {isAuthenticated && <button className="logout-btn" onClick={() => { localStorage.removeItem('taskToken'); window.dispatchEvent(new Event('auth-changed')); window.location.href = '/login'; }}>Logout</button>}
         </div>
       </div>
     </nav>

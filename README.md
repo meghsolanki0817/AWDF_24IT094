@@ -23,6 +23,7 @@ A modern single-page portfolio website built with **React** and **Vite** plus a 
 - Footer with contact email
 - MongoDB-backed task CRUD at `/tasks`
 - React task form with edit, delete, completion, loading, error, and success states
+- JWT registration/login with protected task routes and `/auth/me`
 
 ## Folder Structure
 
@@ -67,7 +68,7 @@ Local (no Docker)
 cd server
 npm install
 ```
-2. Create `server/.env` with `MONGO_URI=mongodb://127.0.0.1:27017/task-manager` (or use your Atlas URI).
+2. Create `server/.env` with `MONGO_URI=mongodb://127.0.0.1:27017/task-manager` and a private `JWT_SECRET` (or use your Atlas URI).
 3. Start MongoDB locally and then run:
 ```powershell
 npm start

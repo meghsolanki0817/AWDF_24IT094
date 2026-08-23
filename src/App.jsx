@@ -10,6 +10,7 @@ import Contact from './components/Contact.jsx';
 import Footer from './components/Footer.jsx';
 import NotFound from './components/NotFound.jsx';
 import Tasks from './components/Tasks.jsx';
+import Auth from './components/Auth.jsx';
 
 const skillList = [
   'HTML',
@@ -49,6 +50,7 @@ function App() {
           <Route path="/projects" element={<Projects />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/tasks" element={<Tasks />} />
+          <Route path="/login" element={<Auth />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

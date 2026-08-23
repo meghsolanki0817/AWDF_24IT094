@@ -1,9 +1,12 @@
 const path = require('path');
 const express = require('express');
 const tasksRouter = require('./routes/tasks');
+const authRouter = require('./routes/auth');
 const logger = require('./middleware/logger');
 const validateContentType = require('./middleware/validateContentType');
 const errorHandler = require('./middleware/errorHandler');
+const auth = require('./middleware/auth');
+const validateTask = require('./middleware/validateTask');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
@@ -20,8 +23,12 @@ app.use(logger);
 // Enable CORS for development / front-end
 app.use(cors());
 
+app.use('/auth', validateContentType, authRouter);
 // Mount tasks router with content-type validation for POST/PUT
-app.use('/tasks', validateContentType, tasksRouter);
+app.use('/tasks', auth, validateContentType, (req, res, next) => {
+  if (req.method === 'POST' || req.method === 'PUT') return validateTask(req, res, next);
+  next();
+}, tasksRouter);
 
 // 404 handler for unknown routes
 app.use((req, res, next) => {

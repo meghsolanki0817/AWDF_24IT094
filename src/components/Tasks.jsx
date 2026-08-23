@@ -25,7 +25,17 @@ function Tasks() {
   };
 
   useEffect(() => {
+    if (!localStorage.getItem('taskToken')) {
+      window.location.replace('/login');
+      return;
+    }
     loadTasks();
+  }, []);
+
+  useEffect(() => {
+    const redirectToLogin = () => window.location.replace('/login');
+    window.addEventListener('auth-expired', redirectToLogin);
+    return () => window.removeEventListener('auth-expired', redirectToLogin);
   }, []);
 
   const handleSubmit = async (event) => {
@@ -86,7 +96,7 @@ function Tasks() {
   return (
     <section className="section tasks-section">
       <div className="section-heading">
-        <p className="section-label">Practical 6</p>
+        <p className="section-label">Practical 7</p>
         <h2>Task board</h2>
         <p className="tasks-intro">A full-stack task list backed by Express, MongoDB, and synchronized React state.</p>
       </div>
