@@ -1,6 +1,6 @@
 # Student Portfolio + Task Manager API (24IT094)
 
-A modern single-page portfolio website built with **React** and **Vite** plus a **Practical 5 backend** using **Express, MongoDB, and Mongoose**.
+A modern single-page portfolio website built with **React** and **Vite** plus a **Practical 6 full-stack task manager** using **Express, MongoDB, and Mongoose**.
 
 ## Project Overview
 
@@ -21,6 +21,8 @@ A modern single-page portfolio website built with **React** and **Vite** plus a 
 - Loading and error states for asynchronous fetches
 - Repository search and retry button in the Projects section
 - Footer with contact email
+- MongoDB-backed task CRUD at `/tasks`
+- React task form with edit, delete, completion, loading, error, and success states
 
 ## Folder Structure
 
@@ -54,9 +56,9 @@ npm run dev
 
 Then open the local Vite URL shown in the terminal.
 
-## Running Practical 5 (Backend with MongoDB)
+## Running Practical 6 (Full-stack task integration)
 
-You can run the backend in two ways: locally with a local MongoDB instance, or via Docker Compose (recommended for convenience).
+The backend uses MongoDB when available. If MongoDB is not installed, it starts in temporary in-memory mode so the practical can still be demonstrated; data in that mode is lost when the server restarts.
 
 Local (no Docker)
 
@@ -65,8 +67,8 @@ Local (no Docker)
 cd server
 npm install
 ```
-2. Create a `.env` file in `server/` (you can copy from `.env.example`) and set `MONGO_URI`.
-3. Start MongoDB locally (or use Atlas) and then run:
+2. Create `server/.env` with `MONGO_URI=mongodb://127.0.0.1:27017/task-manager` (or use your Atlas URI).
+3. Start MongoDB locally and then run:
 ```powershell
 npm start
 ```
@@ -96,6 +98,14 @@ cd ..
 npm run dev:all
 ```
 
+
+The frontend proxies `/tasks` to `http://localhost:3000`, so run both processes from the project root:
+
+```powershell
+npm run dev:all
+```
+
+Open `/tasks` in the React app to create, view, update, complete, and delete persisted tasks. Refresh the browser to verify MongoDB persistence.
 
 ## Practical 3 API Integration
 

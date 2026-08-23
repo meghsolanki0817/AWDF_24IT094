@@ -7,7 +7,8 @@ function NavBar({ onThemeToggle, isDarkMode }) {
     { name: 'About', path: '/about' },
     { name: 'Skills', path: '/skills' },
     { name: 'Projects', path: '/projects' },
-    { name: 'Contact', path: '/contact' }
+    { name: 'Contact', path: '/contact' },
+    { name: 'Tasks', path: '/tasks' }
   ];
   
   const [activeItem, setActiveItem] = useState('Home');

@@ -5,14 +5,14 @@ const logger = require('./middleware/logger');
 const validateContentType = require('./middleware/validateContentType');
 const errorHandler = require('./middleware/errorHandler');
 const cors = require('cors');
+const mongoose = require('mongoose');
 
-// Load env from server/.env only when running from server folder
-if (process.cwd().includes(path.resolve(__dirname))) {
-  require('dotenv').config({ path: path.resolve(__dirname, '.env') });
-}
+// Load server/.env whether the server is started from root or server/.
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/task-manager';
 
 app.use(express.json());
 app.use(logger);
@@ -31,6 +31,11 @@ app.use((req, res, next) => {
 // Global error handler
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`Task Manager API listening on port ${PORT}`);
-});
+mongoose.connect(MONGO_URI)
+  .then(() => {
+    app.listen(PORT, () => console.log(`Task Manager API listening on port ${PORT} with MongoDB`));
+  })
+  .catch((error) => {
+    console.warn(`MongoDB unavailable (${error.message}). Starting in temporary in-memory mode.`);
+    app.listen(PORT, () => console.log(`Task Manager API listening on port ${PORT} in memory mode`));
+  });

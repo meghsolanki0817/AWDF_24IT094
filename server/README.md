@@ -1,8 +1,15 @@
 # Task Manager API
 
-Task Manager backend for Practical 4 using **Express** and an in-memory task list.
+Task Manager backend for Practical 6 using **Express, MongoDB, and Mongoose**. If MongoDB is unavailable, it starts in temporary in-memory mode for local demonstration.
 
 This server implements a simple REST API with logging middleware, content-type validation, and global error handling.
+
+Create a `server/.env` file first:
+
+```env
+MONGO_URI=mongodb://127.0.0.1:27017/task-manager
+PORT=3000
+```
 
 Install and run:
 
@@ -23,6 +30,6 @@ Endpoints:
 Notes:
 
 - `title` is required and trimmed before save.
-- `priority` is restricted to `low`, `medium`, or `high`.
+- Tasks are persisted in MongoDB and sorted newest first.
 - Mongoose validation errors are returned as structured JSON.
 - Invalid task IDs return a 400 error and missing tasks return 404.
