@@ -1,8 +1,9 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
 import { createTask, deleteTask, getTasks, updateTask } from '../api.js';
 
-// Supplementary Problem: Lazy loading heavy component on demand
+// Supplementary Problem: Lazy loading heavy components on demand
 const TaskAnalytics = lazy(() => import('./TaskAnalytics.jsx'));
+const HeavyChart = lazy(() => import('./HeavyChart.jsx'));
 
 const emptyForm = { title: '', description: '' };
 
@@ -15,6 +16,7 @@ function Tasks() {
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [showAnalytics, setShowAnalytics] = useState(false);
+  const [showHeavyChart, setShowHeavyChart] = useState(false);
 
   const loadTasks = async () => {
     setLoading(true);
@@ -126,20 +128,35 @@ function Tasks() {
         <div className="task-actions"><button type="button" onClick={() => startEditing(task)}>Edit</button><button type="button" onClick={() => removeTask(task._id)}>Delete</button></div>
       </article>)}</div>}
 
-      <div style={{ marginTop: '24px', textAlign: 'center' }}>
+      <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'center', gap: '14px', flexWrap: 'wrap' }}>
         <button
           type="button"
           className="submit-btn"
           style={{ background: '#2563eb', padding: '12px 24px', cursor: 'pointer' }}
           onClick={() => setShowAnalytics((prev) => !prev)}
         >
-          {showAnalytics ? 'Hide Analytics' : '📊 View Task & Performance Analytics (Lazy-Loaded)'}
+          {showAnalytics ? 'Hide Analytics' : '📊 View Task Analytics (Lazy-Loaded)'}
+        </button>
+
+        <button
+          type="button"
+          className="submit-btn"
+          style={{ background: '#059669', padding: '12px 24px', cursor: 'pointer' }}
+          onClick={() => setShowHeavyChart((prev) => !prev)}
+        >
+          {showHeavyChart ? 'Hide Heavy Chart' : '📈 View HeavyChart.jsx (Lazy-Loaded)'}
         </button>
       </div>
 
       {showAnalytics && (
         <Suspense fallback={<div className="message-card">Loading Task Analytics chunk...</div>}>
           <TaskAnalytics tasks={tasks} />
+        </Suspense>
+      )}
+
+      {showHeavyChart && (
+        <Suspense fallback={<div className="message-card">Loading HeavyChart chunk...</div>}>
+          <HeavyChart />
         </Suspense>
       )}
     </section>

@@ -54,6 +54,7 @@ WEBDEV/
 │       ├── Projects.jsx           # Lazy-loaded route
 │       ├── Contact.jsx            # Lazy-loaded route
 │       ├── Tasks.jsx              # Lazy-loaded route
+│       ├── HeavyChart.jsx         # Supplementary lazy-loaded heavy chart component
 │       ├── TaskAnalytics.jsx      # Supplementary lazy-loaded component
 │       ├── Auth.jsx               # Lazy-loaded route
 │       ├── NotFound.jsx           # Lazy-loaded route

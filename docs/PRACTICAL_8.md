@@ -57,31 +57,33 @@ Executed `npm run build` after implementing route-based code splitting and compo
 ```text
 dist/index.html                          0.42 kB │ gzip:  0.29 kB
 dist/assets/index-DgEDZVYg.css           9.61 kB │ gzip:  2.72 kB
-dist/assets/Skills-DGqTgowX.js           0.46 kB │ gzip:  0.24 kB
-dist/assets/NotFound-C0-knVSu.js         0.48 kB │ gzip:  0.28 kB
+dist/assets/Skills-bdq0-PBk.js           0.46 kB │ gzip:  0.24 kB
+dist/assets/NotFound-Pn2YaPqz.js         0.48 kB │ gzip:  0.28 kB
 dist/assets/api-DqQ-wyJN.js              0.74 kB │ gzip:  0.42 kB
-dist/assets/Home-Bf1kHwC4.js             1.20 kB │ gzip:  0.55 kB
-dist/assets/About-DVO3MKOg.js            1.30 kB │ gzip:  0.42 kB
-dist/assets/Contact-Vz4Vf8mW.js          1.59 kB │ gzip:  0.61 kB
-dist/assets/Auth-DbS9_gPM.js             1.71 kB │ gzip:  0.76 kB
-dist/assets/Projects-YLtyirDF.js         2.24 kB │ gzip:  0.96 kB
-dist/assets/TaskAnalytics-Cw8-qL7S.js    3.38 kB │ gzip:  1.19 kB
-dist/assets/Tasks-D-FPTcW_.js            4.45 kB │ gzip:  1.69 kB
-dist/assets/index-BQ8my7Q0.js          187.01 kB │ gzip: 61.96 kB
-✓ built in 229ms
+dist/assets/Home-eT-2SKYD.js             1.20 kB │ gzip:  0.55 kB
+dist/assets/About-Cz3g7MU-.js            1.30 kB │ gzip:  0.42 kB
+dist/assets/Contact-CvVJCr85.js          1.59 kB │ gzip:  0.61 kB
+dist/assets/Auth-CCWGui4a.js             1.71 kB │ gzip:  0.76 kB
+dist/assets/Projects-BjnwlY5v.js         2.24 kB │ gzip:  0.96 kB
+dist/assets/HeavyChart-DC_CC5tL.js       3.00 kB │ gzip:  1.25 kB
+dist/assets/TaskAnalytics-DWIrfnjI.js    3.38 kB │ gzip:  1.19 kB
+dist/assets/Tasks-yj9bwNUj.js            4.99 kB │ gzip:  1.79 kB
+dist/assets/index-BFQJa28E.js          187.01 kB │ gzip: 61.96 kB
+✓ built in 205ms
 ```
 
 ### Metrics Comparison Table
 
 | Metric | Before Optimization | After Optimization | Impact / Delta |
 | :--- | :--- | :--- | :--- |
-| **Total Chunks Generated** | 1 monolithic bundle | 10 separate chunks | Clean separation of concerns |
+| **Total Chunks Generated** | 1 monolithic bundle | 11 separate chunks | Clean separation of concerns |
 | **Main Bundle Size (Raw)** | 197.24 kB | 187.01 kB | **-10.23 kB (-5.2%) reduction** |
 | **Main Bundle Size (Gzip)** | 64.19 kB | 61.96 kB | **-2.23 kB (-3.5%) reduction** |
 | **Initial JS Loaded on `/`** | 197.24 kB | 188.21 kB (`index` + `Home`) | Immediate savings upfront |
 | **Projects Route Cost** | Bundled upfront | 2.24 kB (downloaded on demand) | 0 kB cost until clicked |
 | **Contact Route Cost** | Bundled upfront | 1.59 kB (downloaded on demand) | 0 kB cost until clicked |
-| **Tasks Route Cost** | Bundled upfront | 4.45 kB (downloaded on demand) | 0 kB cost until clicked |
+| **Tasks Route Cost** | Bundled upfront | 4.99 kB (downloaded on demand) | 0 kB cost until clicked |
+| **HeavyChart.jsx Cost** | Bundled upfront | 3.00 kB (downloaded on toggle) | 0 kB cost until toggled |
 | **Task Analytics Chart Cost** | Bundled upfront | 3.38 kB (downloaded on toggle) | 0 kB cost until toggled |
 
 ---
@@ -215,5 +217,7 @@ const TaskAnalytics = lazy(() => import('./TaskAnalytics.jsx'));
 6. Click on **Projects** in the navigation bar:
    - Notice the `LoadingFallback` spinner appears smoothly.
    - Observe `Projects-[hash].js` being fetched over the network and rendered.
-7. Click on **Tasks** and click **📊 View Task & Performance Analytics**:
+7. Click on **Tasks** and click **📊 View Task Analytics**:
    - Observe `TaskAnalytics-[hash].js` loaded on demand!
+8. In **Tasks**, click **📈 View HeavyChart.jsx (Lazy-Loaded)**:
+   - Observe `HeavyChart-[hash].js` chunk downloaded on demand with its own Suspense fallback!
