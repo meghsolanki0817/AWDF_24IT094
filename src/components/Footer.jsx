@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 function Footer({ email }) {
   return (
     <footer className="footer" id="contact">
@@ -13,4 +15,4 @@ function Footer({ email }) {
   );
 }
 
-export default Footer;
+export default memo(Footer);

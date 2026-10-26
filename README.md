@@ -1,29 +1,33 @@
 # Student Portfolio + Task Manager API (24IT094)
 
-A modern single-page portfolio website built with **React** and **Vite** plus a **Practical 6 full-stack task manager** using **Express, MongoDB, and Mongoose**.
+A modern single-page portfolio website built with **React** and **Vite** plus a **Practical 6/7 full-stack task manager** using **Express, MongoDB, Mongoose, and JWT authentication**, optimized with **Practical 8 Route-Based Lazy Loading and Performance Optimization**.
 
 ## Project Overview
 
-- Student Name: Megh Solanki
-- Enrollment No.: 24IT094
-- Branch: Information Technology
-- College: CSPIT, CHARUSAT
-- Portfolio Owner: Megh Solanki
-- Technology: React, Vite, JavaScript, CSS
+- **Student Name:** Megh Solanki
+- **Enrollment No.:** 24IT094
+- **Branch:** Information Technology
+- **College:** CSPIT, CHARUSAT
+- **Portfolio Owner:** Megh Solanki
+- **Technology:** React 18, Vite, React Router 7, Express, MongoDB, Mongoose, CSS
 
 ## Features
 
-- Responsive portfolio layout
-- Navigation bar with active link highlighting
+- Responsive portfolio layout with dark/light mode toggle
+- Navigation bar with active link highlighting and search
 - About section with student details
 - Skills section with dynamic rendering using `map()`
-- GitHub API integration on the Projects page
-- Loading and error states for asynchronous fetches
-- Repository search and retry button in the Projects section
+- GitHub API integration on the Projects page with live search and retry
 - Footer with contact email
 - MongoDB-backed task CRUD at `/tasks`
 - React task form with edit, delete, completion, loading, error, and success states
 - JWT registration/login with protected task routes and `/auth/me`
+- **Practical 8 Code Splitting & Performance Optimization:**
+  - Route-level lazy loading (`React.lazy()` & `<Suspense>`) for all routes (`/`, `/about`, `/skills`, `/projects`, `/contact`, `/tasks`, `/login`)
+  - Polished Suspense fallback spinner component (`LoadingFallback.jsx`)
+  - Supplementary on-demand lazy component: `TaskAnalytics.jsx` with visual completion metrics
+  - Component memoization (`React.memo`) for `Header` and `Footer` to eliminate unnecessary re-renders
+  - Optimized effect dependencies in `NavBar` to avoid redundant listener bindings
 
 ## Folder Structure
 
@@ -33,103 +37,109 @@ WEBDEV/
 ├── package.json
 ├── vite.config.js
 ├── README.md
-├── .gitignore
+├── docs/
+│   └── PRACTICAL_8.md             # Detailed Practical 8 benchmark report
 ├── src/
 │   ├── main.jsx
-│   ├── App.jsx
+│   ├── App.jsx                    # React.lazy() & Suspense route boundaries
 │   ├── App.css
 │   ├── index.css
+│   ├── api.js
 │   └── components/
-│       ├── Header.jsx
-│       ├── NavBar.jsx
-│       ├── About.jsx
-│       ├── Skills.jsx
-│       ├── Projects.jsx
-│       └── Footer.jsx
+│       ├── Header.jsx             # React.memo optimized
+│       ├── NavBar.jsx             # Optimized effect listener
+│       ├── Home.jsx               # Lazy-loaded route
+│       ├── About.jsx              # Lazy-loaded route
+│       ├── Skills.jsx             # Lazy-loaded route
+│       ├── Projects.jsx           # Lazy-loaded route
+│       ├── Contact.jsx            # Lazy-loaded route
+│       ├── Tasks.jsx              # Lazy-loaded route
+│       ├── TaskAnalytics.jsx      # Supplementary lazy-loaded component
+│       ├── Auth.jsx               # Lazy-loaded route
+│       ├── NotFound.jsx           # Lazy-loaded route
+│       ├── LoadingFallback.jsx    # Custom Suspense spinner UI
+│       └── Footer.jsx             # React.memo optimized
 ```
 
-## How to Run
+---
 
+## Practical 8: Performance Optimization & Lazy Loading
+
+### Before vs. After Optimization (Vite Build Analysis)
+
+#### 1. Baseline (Single Monolithic Bundle)
+Before optimization, all route components were statically imported:
+```text
+dist/index.html                   0.42 kB │ gzip:  0.29 kB
+dist/assets/index-D-Y12iIs.css    8.25 kB │ gzip:  2.37 kB
+dist/assets/index-tYaEH75S.js   197.24 kB │ gzip: 64.19 kB
+```
+*Total initial JS payload:* **197.24 kB** (1 bundle upfront).
+
+#### 2. After Code Splitting & Lazy Loading (`React.lazy`)
+After converting routes to dynamic imports and wrapping with `<Suspense>`:
+```text
+dist/index.html                          0.42 kB │ gzip:  0.29 kB
+dist/assets/index-DgEDZVYg.css           9.61 kB │ gzip:  2.72 kB
+dist/assets/Skills-DGqTgowX.js           0.46 kB │ gzip:  0.24 kB
+dist/assets/NotFound-C0-knVSu.js         0.48 kB │ gzip:  0.28 kB
+dist/assets/api-DqQ-wyJN.js              0.74 kB │ gzip:  0.42 kB
+dist/assets/Home-Bf1kHwC4.js             1.20 kB │ gzip:  0.55 kB
+dist/assets/About-DVO3MKOg.js            1.30 kB │ gzip:  0.42 kB
+dist/assets/Contact-Vz4Vf8mW.js          1.59 kB │ gzip:  0.61 kB
+dist/assets/Auth-DbS9_gPM.js             1.71 kB │ gzip:  0.76 kB
+dist/assets/Projects-YLtyirDF.js         2.24 kB │ gzip:  0.96 kB
+dist/assets/TaskAnalytics-Cw8-qL7S.js    3.38 kB │ gzip:  1.19 kB
+dist/assets/Tasks-D-FPTcW_.js            4.45 kB │ gzip:  1.69 kB
+dist/assets/index-BQ8my7Q0.js          187.01 kB │ gzip: 61.96 kB
+```
+
+### Quantitative Metrics Comparison
+
+| Metric | Before Optimization | After Optimization | Difference / Gain |
+| :--- | :--- | :--- | :--- |
+| **Main Bundle JS** | 197.24 kB | 187.01 kB | **-10.23 kB (-5.2%) reduction** |
+| **Main Bundle (gzip)** | 64.19 kB | 61.96 kB | **-2.23 kB (-3.5%) reduction** |
+| **Separate Route Chunks** | 0 (all combined) | 10 distinct chunks | Loaded purely on demand |
+| **Initial JS on `/`** | 197.24 kB | 188.21 kB | Unused route code eliminated |
+| **Projects chunk** | Bundled upfront | 2.24 kB | Fetched only on `/projects` |
+| **Contact chunk** | Bundled upfront | 1.59 kB | Fetched only on `/contact` |
+| **Tasks chunk** | Bundled upfront | 4.45 kB | Fetched only on `/tasks` |
+| **Analytics chunk** | Bundled upfront | 3.38 kB | Fetched only when toggled |
+
+### How to Test Lazy Loading with Network Throttling
+
+1. Build the production bundle:
+   ```bash
+   npm run build
+   ```
+2. Start the preview server:
+   ```bash
+   npm run preview
+   ```
+3. Open Developer Tools (`F12`), navigate to the **Network** tab, filter by **JS**, and set Throttling to **Slow 3G**.
+4. Reload the page at `http://localhost:4173/`:
+   - Notice only the initial shell (`index-[hash].js`) and `Home-[hash].js` are downloaded.
+5. Click on **Projects** or **Contact**:
+   - The `<LoadingFallback>` spinner renders while the browser fetches `Projects-[hash].js` / `Contact-[hash].js`.
+6. On the `/tasks` route, click **📊 View Task & Performance Analytics**:
+   - The dedicated `TaskAnalytics-[hash].js` chunk is fetched on demand!
+
+For comprehensive analysis, conceptual questions, and React Profiler notes, see [docs/PRACTICAL_8.md](file:///c:/Users/meghs/OneDrive/Desktop/WEBDEV/docs/PRACTICAL_8.md).
+
+---
+
+## How to Run the App
+
+### Frontend Development
 ```bash
 npm install
 npm run dev
 ```
 
-Then open the local Vite URL shown in the terminal.
-
-## Running Practical 6 (Full-stack task integration)
-
-The backend uses MongoDB when available. If MongoDB is not installed, it starts in temporary in-memory mode so the practical can still be demonstrated; data in that mode is lost when the server restarts.
-
-Local (no Docker)
-
-1. Install dependencies:
-```powershell
-cd server
-npm install
-```
-2. Create `server/.env` with `MONGO_URI=mongodb://127.0.0.1:27017/task-manager` and a private `JWT_SECRET` (or use your Atlas URI).
-3. Start MongoDB locally and then run:
-```powershell
-npm start
-```
-
-Docker (recommended)
-
-If you have Docker installed, run both MongoDB and the server with one command from the project root:
-
-```powershell
-docker-compose up --build
-```
-
-This starts MongoDB on port `27017` and the server on port `3000` (accessible at `http://localhost:3000`).
-
-Frontend + Combined dev
-
-To run the frontend (Vite) and backend concurrently during development:
-
-```powershell
-# install root deps
-npm install
-# install server deps
-cd server
-npm install
-cd ..
-# run both
-npm run dev:all
-```
-
-
-The frontend proxies `/tasks` to `http://localhost:3000`, so run both processes from the project root:
-
-```powershell
-npm run dev:all
-```
-
-Open `/tasks` in the React app to create, view, update, complete, and delete persisted tasks. Refresh the browser to verify MongoDB persistence.
-
-## Practical 3 API Integration
-
-- The `Projects` page now fetches repositories from GitHub using the public endpoint for `meghsolanki`.
-- The page shows a loading spinner/message while the request is in progress.
-- If the API call fails, an error message displays with a retry button.
-- You can search repositories by name and see the repo star count and GitHub URL.
-
-## Notes
-
-- This project uses functional React components and props.
-- The skills list is rendered dynamically via props and `map()`.
-- Styling is done with custom CSS only.
-- The backend uses Mongoose schema validation, enums, and MongoDB persistence.
-
-## GitHub Repository Setup
-
-If you want to initialize this as a Git repository, run:
-
+### Full-Stack (Frontend + Backend)
 ```bash
-git init
-git add .
-git commit -m "Initial commit: student portfolio project"
+npm run dev:all
 ```
 
-Then add your GitHub remote URL and push.
+Open `http://localhost:5173` in your browser.

@@ -1,5 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import { createTask, deleteTask, getTasks, updateTask } from '../api.js';
+
+// Supplementary Problem: Lazy loading heavy component on demand
+const TaskAnalytics = lazy(() => import('./TaskAnalytics.jsx'));
 
 const emptyForm = { title: '', description: '' };
 
@@ -11,6 +14,7 @@ function Tasks() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
+  const [showAnalytics, setShowAnalytics] = useState(false);
 
   const loadTasks = async () => {
     setLoading(true);
@@ -121,6 +125,23 @@ function Tasks() {
         <div className="task-copy"><h3>{task.title}</h3>{task.description && <p>{task.description}</p>}</div>
         <div className="task-actions"><button type="button" onClick={() => startEditing(task)}>Edit</button><button type="button" onClick={() => removeTask(task._id)}>Delete</button></div>
       </article>)}</div>}
+
+      <div style={{ marginTop: '24px', textAlign: 'center' }}>
+        <button
+          type="button"
+          className="submit-btn"
+          style={{ background: '#2563eb', padding: '12px 24px', cursor: 'pointer' }}
+          onClick={() => setShowAnalytics((prev) => !prev)}
+        >
+          {showAnalytics ? 'Hide Analytics' : '📊 View Task & Performance Analytics (Lazy-Loaded)'}
+        </button>
+      </div>
+
+      {showAnalytics && (
+        <Suspense fallback={<div className="message-card">Loading Task Analytics chunk...</div>}>
+          <TaskAnalytics tasks={tasks} />
+        </Suspense>
+      )}
     </section>
   );
 }

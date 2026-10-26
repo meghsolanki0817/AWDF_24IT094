@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 function Header({ name, themeColor }) {
   return (
     <header className="header-section" style={{ background: `linear-gradient(135deg, ${themeColor} 0%, #0f172a 100%)` }}>
@@ -10,4 +12,4 @@ function Header({ name, themeColor }) {
   );
 }
 
-export default Header;
+export default memo(Header);

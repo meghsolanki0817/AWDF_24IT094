@@ -24,7 +24,7 @@ function NavBar({ onThemeToggle, isDarkMode }) {
       window.removeEventListener('auth-changed', updateAuth);
       window.removeEventListener('auth-expired', updateAuth);
     };
-  });
+  }, []);
 
   const handleSearchChange = (e) => {
     setSearchInput(e.target.value);
