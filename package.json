@@ -10,7 +10,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "start:server": "node server/index.js",
-    "install-server": "cd server && npm install"
+    "install-server": "cd server && npm install",
+    "benchmark:cache": "node server/benchmark.js"
   },
   "dependencies": {
     "react": "^18.3.1",

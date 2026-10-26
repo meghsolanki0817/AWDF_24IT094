@@ -10,6 +10,8 @@ const validateTask = require('./middleware/validateTask');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
+const cache = require('./cache');
+
 // Load server/.env whether the server is started from root or server/.
 require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
@@ -22,6 +24,21 @@ app.use(logger);
 
 // Enable CORS for development / front-end
 app.use(cors());
+
+// Practical 9: Public debug endpoint for cache statistics
+app.get('/cache/stats', (req, res) => {
+  const stats = cache.getDebugStats ? cache.getDebugStats() : { stats: cache.getStats(), keys: cache.keys() };
+  res.status(200).json({
+    description: 'Practical 9: In-Memory Caching Debug Stats (node-cache)',
+    ttlSeconds: 60,
+    ...stats
+  });
+});
+
+app.post('/cache/clear', (req, res) => {
+  cache.flushAll();
+  res.status(200).json({ message: 'All in-memory cache keys flushed successfully.' });
+});
 
 app.use('/auth', validateContentType, authRouter);
 // Mount tasks router with content-type validation for POST/PUT
