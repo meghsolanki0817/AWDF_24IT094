@@ -115,7 +115,7 @@ function TaskAnalytics({ tasks = [] }) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '10px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ fontSize: '1.2rem' }}>⚡</span>
-            <strong style={{ color: '#34d399', fontSize: '1.05rem' }}>Practical 9: In-Memory Caching Monitor (`node-cache`)</strong>
+            <strong style={{ color: '#34d399', fontSize: '1.05rem' }}>In-Memory Caching Monitor (`node-cache`)</strong>
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
             <button
@@ -203,7 +203,7 @@ function TaskAnalytics({ tasks = [] }) {
         color: '#94a3b8',
         lineHeight: 1.6
       }}>
-        <strong style={{ color: '#e2e8f0' }}>⚡ Practical 8 &amp; 9 Optimization Summary:</strong> Route components and heavy charts are split with <code>React.lazy()</code> for fast frontend bundles, while backend queries are accelerated with <code>node-cache</code> in-memory caching (60s TTL) with automatic invalidation on writes.
+        <strong style={{ color: '#e2e8f0' }}>⚡ Performance &amp; Optimization Summary:</strong> Route components and heavy charts are split with <code>React.lazy()</code> for fast frontend bundles, while backend queries are accelerated with <code>node-cache</code> in-memory caching (60s TTL) with automatic invalidation on writes.
       </div>
     </div>
   );

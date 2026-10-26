@@ -102,7 +102,7 @@ function Tasks() {
   return (
     <section className="section tasks-section">
       <div className="section-heading">
-        <p className="section-label">Practical 7</p>
+        <p className="section-label">Task Management</p>
         <h2>Task board</h2>
         <p className="tasks-intro">A full-stack task list backed by Express, MongoDB, and synchronized React state.</p>
       </div>
