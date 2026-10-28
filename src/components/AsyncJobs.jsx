@@ -75,13 +75,13 @@ function AsyncJobs() {
     };
   }, []);
 
-  // Practical 10 Demo: Trigger Task Creation (with 2s slow notification listener)
+  // Trigger Task Creation (with 2s slow notification listener)
   const handleCreateTaskDemo = async () => {
     setLoadingAction(true);
     setActionNotice(null);
     try {
       const startTime = Date.now();
-      const taskTitle = `Practical 10 Task (${new Date().toLocaleTimeString()})`;
+      const taskTitle = `Background Task (${new Date().toLocaleTimeString()})`;
       const created = await createTask({
         title: taskTitle,
         description: 'Testing non-blocking EventEmitter notification handler'
@@ -91,12 +91,12 @@ function AsyncJobs() {
 
       setActionNotice({
         status: 'SUCCESS',
-        message: `[API] Response 201 Created returned in ${responseTime}ms at ${apiTimestamp}. The listener is now processing asynchronously with a 2-second delay!`,
+        message: `[API] Response 201 Created returned in ${responseTime}ms at ${apiTimestamp}. Notification handler is now running asynchronously in the background (2s delay).`,
         task: created,
         apiTimestamp
       });
 
-      // Poll event logs after 2.5s to display listener execution
+      // Poll event logs after 2.3s to display listener execution
       setTimeout(loadData, 2300);
     } catch (err) {
       setActionNotice({ status: 'ERROR', message: err.message });
@@ -105,7 +105,7 @@ function AsyncJobs() {
     }
   };
 
-  // Practical 10 Demo: Trigger Task Deletion (with 1.5s listener)
+  // Trigger Task Deletion (with 1.5s listener)
   const handleDeleteTaskDemo = async () => {
     setLoadingAction(true);
     setActionNotice(null);
@@ -127,7 +127,7 @@ function AsyncJobs() {
 
       setActionNotice({
         status: 'SUCCESS',
-        message: `[API] Delete response 200 OK returned in ${responseTime}ms at ${apiTimestamp}. 'task-deleted' listener running in background.`,
+        message: `[API] Delete response 200 OK returned in ${responseTime}ms at ${apiTimestamp}. Deletion notification running in background.`,
         apiTimestamp
       });
 
@@ -139,7 +139,7 @@ function AsyncJobs() {
     }
   };
 
-  // Practical 10 Demo: Simulate Error Event
+  // Simulate Error Event
   const handleSimulateError = async () => {
     setLoadingAction(true);
     setActionNotice(null);
@@ -182,14 +182,14 @@ function AsyncJobs() {
   return (
     <section className="section async-jobs-section" id="async-jobs">
       <div className="section-heading">
-        <p className="section-label">Practical 10: IT3E301</p>
-        <h2>Asynchronous Processing with Event-Driven Architecture</h2>
+        <p className="section-label">Event-Driven Architecture</p>
+        <h2>Asynchronous Processing Center</h2>
         <p style={{ color: '#cbd5e1', marginTop: '8px' }}>
-          Decoupled background processing using Node.js native <code>EventEmitter</code> without external dependencies.
+          Decoupled background processing using Node.js native <code>EventEmitter</code> and asynchronous event streams.
         </p>
       </div>
 
-      {/* Practical 10 Core Demonstrator Box */}
+      {/* Non-Blocking Execution Console */}
       <div style={{
         background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95))',
         border: '1px solid rgba(59, 130, 246, 0.3)',
@@ -204,7 +204,7 @@ function AsyncJobs() {
               🎯 Live EventEmitter Non-Blocking Execution Console
             </h3>
             <p style={{ color: '#94a3b8', fontSize: '0.88rem', margin: '4px 0 0' }}>
-              Observe how the API response returns instantly while the notification listener finishes <strong>2 seconds later</strong>.
+              Observe how the API response returns instantly while the notification listener finishes <strong>2 seconds later</strong> in the background.
             </p>
           </div>
           <button
@@ -289,13 +289,13 @@ function AsyncJobs() {
             justifyContent: 'space-between'
           }}>
             <span>Event Name / Handler</span>
-            <span>Completion Timestamp (Evidence of Non-Blocking Delay)</span>
+            <span>Completion Timestamp (Non-Blocking Delay Proof)</span>
           </div>
 
           <div style={{ maxHeight: '240px', overflowY: 'auto', padding: '8px' }}>
             {eventLogs.length === 0 ? (
               <div style={{ padding: '24px', textAlign: 'center', color: '#64748b', fontSize: '0.85rem' }}>
-                No events recorded yet. Click one of the buttons above or run <code>npm run demo:events</code> in terminal!
+                No events recorded yet. Click one of the buttons above to test live event dispatch!
               </div>
             ) : (
               eventLogs.map((log) => (
@@ -337,7 +337,7 @@ function AsyncJobs() {
         </div>
       </div>
 
-      {/* Practical 10 Theory & Viva FAQ Card */}
+      {/* Architecture Concepts Card */}
       <div style={{
         background: 'rgba(15, 23, 42, 0.85)',
         border: '1px solid rgba(148, 163, 184, 0.2)',
@@ -346,34 +346,34 @@ function AsyncJobs() {
         marginBottom: '28px'
       }}>
         <h3 style={{ margin: '0 0 16px', color: '#38bdf8', fontSize: '1.15rem' }}>
-          💡 Practical 10 Core Theory &amp; Viva Insights
+          💡 Architecture &amp; Non-Blocking Processing Insights
         </h3>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
           <div style={{ background: '#1e293b', padding: '16px', borderRadius: '12px' }}>
             <h4 style={{ color: '#60a5fa', margin: '0 0 8px', fontSize: '0.95rem' }}>
-              1. Why doesn&apos;t emit() block the API response?
+              1. Non-Blocking Response Mechanism
             </h4>
             <p style={{ color: '#cbd5e1', fontSize: '0.84rem', margin: 0, lineHeight: 1.5 }}>
-              In Node.js, <code>res.status(201).json()</code> sends the HTTP response immediately to the client socket. The listener callback using <code>setTimeout</code> is offloaded to the Node.js event loop timer queue, executing during a subsequent tick without blocking the main thread.
+              In Node.js, <code>res.status(201).json()</code> writes response headers and data to the socket immediately. Event listener callbacks are offloaded to the event loop, executing on subsequent ticks without blocking HTTP clients.
             </p>
           </div>
 
           <div style={{ background: '#1e293b', padding: '16px', borderRadius: '12px' }}>
             <h4 style={{ color: '#34d399', margin: '0 0 8px', fontSize: '0.95rem' }}>
-              2. What if notification logic was inside POST route?
+              2. Decoupled Side-Effects
             </h4>
             <p style={{ color: '#cbd5e1', fontSize: '0.84rem', margin: 0, lineHeight: 1.5 }}>
-              If placed synchronously inside the route, the HTTP client would wait for the entire side-effect (e.g. 2,000ms email dispatch). Latency would increase from 10ms to &gt;2010ms, and third-party failures would fail the entire request.
+              Decoupling slow side-effects (e.g., email/SMS dispatch or analytics logging) prevents requests from stalling. Latency remains at ~10ms instead of spiking by 2,000ms+ for each operation.
             </p>
           </div>
 
           <div style={{ background: '#1e293b', padding: '16px', borderRadius: '12px' }}>
             <h4 style={{ color: '#f59e0b', margin: '0 0 8px', fontSize: '0.95rem' }}>
-              3. EventEmitter vs Production Message Queues
+              3. In-Process vs Distributed Queues
             </h4>
             <p style={{ color: '#cbd5e1', fontSize: '0.84rem', margin: 0, lineHeight: 1.5 }}>
-              <code>EventEmitter</code> is single-process and in-memory: events are lost if the server restarts. Production systems handling millions of events require distributed, persistent brokers like RabbitMQ, Redis Streams, BullMQ, or Kafka.
+              <code>EventEmitter</code> is lightweight and zero-dependency for single-instance Node.js apps. High-scale multi-container production environments use persistent distributed message brokers (RabbitMQ, Redis Streams, BullMQ, Kafka).
             </p>
           </div>
         </div>
@@ -388,7 +388,7 @@ function AsyncJobs() {
         marginBottom: '28px'
       }}>
         <h3 style={{ margin: '0 0 12px', color: '#60a5fa', fontSize: '1.2rem' }}>
-          ⚡ Supplementary: Background Job Worker Queue (HTTP 202 Pattern)
+          ⚡ Background Job Worker Queue (HTTP 202 Pattern)
         </h3>
         <p style={{ color: '#94a3b8', fontSize: '0.88rem', marginBottom: '18px' }}>
           Submits long-running background batch jobs returning instant <strong>HTTP 202 Accepted</strong> status.
