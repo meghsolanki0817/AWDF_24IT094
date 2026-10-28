@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom';
 function NavBar({ onThemeToggle, isDarkMode }) {
   const menuItems = [
     { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
-    { name: 'Skills', path: '/skills' },
-    { name: 'Projects', path: '/projects' },
-    { name: 'Contact', path: '/contact' },
+    { name: 'Dashboard', path: '/dashboard' },
     { name: 'Tasks', path: '/tasks' },
-    { name: 'Async Events', path: '/jobs' }
+    { name: 'Async Events', path: '/jobs' },
+    { name: 'Projects', path: '/projects' },
+    { name: 'Skills', path: '/skills' },
+    { name: 'About', path: '/about' },
+    { name: 'Contact', path: '/contact' }
   ];
   
   const [activeItem, setActiveItem] = useState('Home');

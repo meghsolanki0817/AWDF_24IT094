@@ -8,6 +8,7 @@ import LoadingFallback from './components/LoadingFallback.jsx';
 
 // Practical 8: Route-based code splitting with React.lazy() dynamic imports
 const Home = lazy(() => import('./components/Home.jsx'));
+const Dashboard = lazy(() => import('./components/Dashboard.jsx'));
 const About = lazy(() => import('./components/About.jsx'));
 const Skills = lazy(() => import('./components/Skills.jsx'));
 const Projects = lazy(() => import('./components/Projects.jsx'));
@@ -45,6 +46,7 @@ function App() {
         <Suspense fallback={<LoadingFallback message="Loading page component..." />}>
           <Routes>
             <Route path="/" element={<Home skills={skillList} />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/about" element={<About />} />
             <Route path="/skills" element={<Skills skills={skillList} />} />
             <Route path="/projects" element={<Projects />} />
