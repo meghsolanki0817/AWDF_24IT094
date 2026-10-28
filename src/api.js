@@ -22,6 +22,7 @@ export const updateTask = (id, task) => request(`/tasks/${id}`, { method: 'PUT',
 export const deleteTask = (id) => request(`/tasks/${id}`, { method: 'DELETE' });
 export const register = (credentials) => request('/auth/register', { method: 'POST', body: JSON.stringify(credentials) });
 export const login = (credentials) => request('/auth/login', { method: 'POST', body: JSON.stringify(credentials) });
+export const loginDemo = () => request('/auth/demo', { method: 'POST' });
 export const getCurrentUser = () => request('/auth/me');
 export const getCacheStats = () => request('/cache/stats');
 export const clearCache = () => request('/cache/clear', { method: 'POST' });

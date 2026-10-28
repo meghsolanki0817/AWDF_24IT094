@@ -44,6 +44,31 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
+// 1-Click Demo Login endpoint for seamless evaluation
+router.post('/demo', async (req, res, next) => {
+  try {
+    const email = 'demo@example.com';
+    let user;
+    if (useMongo()) {
+      user = await User.findOne({ email });
+      if (!user) {
+        const hashedPassword = await bcrypt.hash('password123', 10);
+        user = await User.create({ email, password: hashedPassword });
+      }
+    } else {
+      user = memoryUsers.find((u) => u.email === email);
+      if (!user) {
+        const hashedPassword = await bcrypt.hash('password123', 10);
+        user = { _id: 'demo-user-1', email, password: hashedPassword };
+        memoryUsers.push(user);
+      }
+    }
+    res.status(200).json({ token: issueToken(user), user: publicUser(user) });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/me', auth, async (req, res, next) => {
   try {
     const user = useMongo() ? await User.findById(req.user.id).select('-password') : memoryUsers.find((item) => item._id === req.user.id);
