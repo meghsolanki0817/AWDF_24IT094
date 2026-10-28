@@ -31,17 +31,7 @@ function Tasks() {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem('taskToken')) {
-      window.location.replace('/login');
-      return;
-    }
     loadTasks();
-  }, []);
-
-  useEffect(() => {
-    const redirectToLogin = () => window.location.replace('/login');
-    window.addEventListener('auth-expired', redirectToLogin);
-    return () => window.removeEventListener('auth-expired', redirectToLogin);
   }, []);
 
   const handleSubmit = async (event) => {

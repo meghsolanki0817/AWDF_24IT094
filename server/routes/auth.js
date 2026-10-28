@@ -37,7 +37,12 @@ router.post('/login', async (req, res, next) => {
     const email = typeof req.body.email === 'string' ? req.body.email.trim().toLowerCase() : '';
     const password = typeof req.body.password === 'string' ? req.body.password : '';
     const user = useMongo() ? await User.findOne({ email }) : memoryUsers.find((item) => item.email === email);
-    if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).json({ error: 'Invalid email or password' });
+    if (!user) {
+      return res.status(401).json({ error: 'No account found with this email. Please click "Don\'t have an account yet? Register" below to create it.' });
+    }
+    if (!(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ error: 'Incorrect password. Please check and try again.' });
+    }
     res.status(200).json({ token: issueToken(user), user: publicUser(user) });
   } catch (error) {
     next(error);

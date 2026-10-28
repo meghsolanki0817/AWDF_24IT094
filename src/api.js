@@ -6,7 +6,7 @@ const request = async (path, options = {}) => {
   });
 
   const data = await response.json().catch(() => ({}));
-  if (response.status === 401) {
+  if (response.status === 401 && !path.startsWith('/auth/')) {
     localStorage.removeItem('taskToken');
     window.dispatchEvent(new Event('auth-expired'));
   }

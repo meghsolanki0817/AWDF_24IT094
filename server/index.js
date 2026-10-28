@@ -94,7 +94,7 @@ app.use((req, res, next) => {
 // Global error handler
 app.use(errorHandler);
 
-mongoose.connect(MONGO_URI)
+mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 2000 })
   .then(() => {
     app.listen(PORT, () => console.log(`Task Manager API listening on port ${PORT} with MongoDB`));
   })

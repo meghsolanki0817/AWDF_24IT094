@@ -1,5 +1,5 @@
 import { useState, lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header.jsx';
 import NavBar from './components/NavBar.jsx';
@@ -51,7 +51,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/jobs" element={<AsyncJobs />} />
-            <Route path="/login" element={<Auth />} />
+            <Route path="/login" element={<Navigate to="/tasks" replace />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
