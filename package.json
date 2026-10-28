@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "start:server": "node server/index.js",
     "install-server": "cd server && npm install",
-    "benchmark:cache": "node server/benchmark.js"
+    "benchmark:cache": "node server/benchmark.js",
+    "demo:events": "node server/demo-events.js"
   },
   "dependencies": {
     "react": "^18.3.1",

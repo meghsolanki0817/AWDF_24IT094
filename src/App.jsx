@@ -13,6 +13,7 @@ const Skills = lazy(() => import('./components/Skills.jsx'));
 const Projects = lazy(() => import('./components/Projects.jsx'));
 const Contact = lazy(() => import('./components/Contact.jsx'));
 const Tasks = lazy(() => import('./components/Tasks.jsx'));
+const AsyncJobs = lazy(() => import('./components/AsyncJobs.jsx'));
 const Auth = lazy(() => import('./components/Auth.jsx'));
 const NotFound = lazy(() => import('./components/NotFound.jsx'));
 
@@ -49,6 +50,7 @@ function App() {
             <Route path="/projects" element={<Projects />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/tasks" element={<Tasks />} />
+            <Route path="/jobs" element={<AsyncJobs />} />
             <Route path="/login" element={<Auth />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

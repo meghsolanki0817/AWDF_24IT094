@@ -33,6 +33,14 @@ A modern single-page portfolio website built with **React** and **Vite** plus a 
   - Single-task caching at `GET /tasks/:id`
   - Live cache statistics debug endpoint at `GET /cache/stats` and `POST /cache/clear`
   - In-app live cache monitor in `TaskAnalytics` UI with hit/miss counters and manual flush button
+- **Practical 10 Asynchronous Processing with Event-Driven Architecture:**
+  - Decoupled background notification system using Node.js native `EventEmitter` (`server/events.js`)
+  - Dedicated listener module (`server/listeners.js`) with non-blocking 2-second simulated dispatch
+  - API response returns immediately (`res.status(201).json(task)`) before background listeners complete
+  - Supplementary `task-deleted` event listener with distinct log message and simulated delay
+  - Supplementary `error` event listener safely intercepting handler errors without crashing server
+  - Interactive demonstration runner (`npm run demo:events` via `server/demo-events.js`)
+  - Live Event-Driven Processing console and SSE monitor in React UI (`/jobs`)
 
 ## Folder Structure
 
@@ -44,14 +52,18 @@ WEBDEV/
 ├── README.md
 ├── docs/
 │   ├── PRACTICAL_8.md             # Detailed Practical 8 benchmark report
-│   └── PRACTICAL_9.md             # Detailed Practical 9 in-memory caching report
+│   ├── PRACTICAL_9.md             # Detailed Practical 9 in-memory caching report
+│   └── PRACTICAL_10.md            # Detailed Practical 10 EventEmitter architecture report
 ├── server/
-│   ├── index.js                   # Express server with /cache debug endpoints
+│   ├── index.js                   # Express server startup and listener registration
+│   ├── events.js                  # Practical 10 TaskEvents extending EventEmitter
+│   ├── listeners.js               # Practical 10 task-created, task-deleted, error listeners
+│   ├── demo-events.js             # Practical 10 console timestamp verification script
 │   ├── cache.js                   # Practical 9 shared node-cache instance
 │   ├── routes/
-│   │   ├── tasks.js               # Cached GET /tasks, GET /tasks/:id, invalidations
+│   │   ├── tasks.js               # Emits 'task-created' and 'task-deleted' after response
 │   │   └── auth.js
-│   └── package.json               # Includes node-cache dependency
+│   └── package.json
 ├── src/
 │   ├── main.jsx
 │   ├── App.jsx                    # React.lazy() & Suspense route boundaries

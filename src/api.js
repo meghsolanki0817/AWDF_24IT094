@@ -25,3 +25,11 @@ export const login = (credentials) => request('/auth/login', { method: 'POST', b
 export const getCurrentUser = () => request('/auth/me');
 export const getCacheStats = () => request('/cache/stats');
 export const clearCache = () => request('/cache/clear', { method: 'POST' });
+export const submitJob = (jobType, payload) => request('/jobs', { method: 'POST', body: JSON.stringify({ jobType, payload }) });
+export const getJobs = () => request('/jobs');
+export const getJobById = (id) => request(`/jobs/${id}`);
+export const getAuditLogs = () => request('/jobs/audit');
+export const getDispatchedNotifications = () => request('/jobs/notifications');
+export const getEventLogs = () => request('/events/logs');
+export const simulateEventError = () => request('/events/simulate-error', { method: 'POST' });
+export const clearEventLogs = () => request('/events/clear-logs', { method: 'POST' });

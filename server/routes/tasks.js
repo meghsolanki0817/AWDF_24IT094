@@ -2,6 +2,8 @@ const express = require('express');
 const Task = require('../models/Task');
 const auth = require('../middleware/auth');
 const cache = require('../cache');
+const taskEvents = require('../events');
+const { getEventLogs, clearEventLogs } = require('../listeners');
 const router = express.Router();
 
 const memoryTasks = [];
@@ -32,6 +34,14 @@ router.get('/cache/stats', (req, res) => {
 router.post('/cache/clear', (req, res) => {
   cache.flushAll();
   res.status(200).json({ message: 'All in-memory cache keys flushed successfully.' });
+});
+
+// Practical 10: Event logs endpoint
+router.get('/events/logs', (req, res) => {
+  res.status(200).json({
+    description: 'Practical 10: Asynchronous Processing with Event-Driven Architecture Logs',
+    logs: getEventLogs()
+  });
 });
 
 // GET /tasks - Fetch all tasks with in-memory caching (60s TTL)
@@ -89,7 +99,7 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
-// POST /tasks - Create task + invalidate cache
+// POST /tasks - Create task + invalidate cache + emit 'task-created' asynchronously
 router.post('/', async (req, res, next) => {
   try {
     const { title, description = '', completed = false } = req.body;
@@ -104,7 +114,10 @@ router.post('/', async (req, res, next) => {
     // Practical 9: Invalidate cache so stale list is never served
     invalidateTaskCache(req.user.id);
 
+    // Practical 10 Step 3: Send response immediately, log timestamp, then emit event
+    console.log(`[API] Response sent at ${new Date().toISOString()}`);
     res.status(201).json(task);
+    taskEvents.emit('task-created', task);
   } catch (error) {
     next(error);
   }
@@ -137,7 +150,7 @@ router.put('/:id', async (req, res, next) => {
   }
 });
 
-// DELETE /tasks/:id - Delete task + invalidate cache
+// DELETE /tasks/:id - Delete task + invalidate cache + emit 'task-deleted' asynchronously
 router.delete('/:id', async (req, res, next) => {
   try {
     let task;
@@ -153,7 +166,10 @@ router.delete('/:id', async (req, res, next) => {
     // Practical 9: Invalidate cache after delete
     invalidateTaskCache(req.user.id, req.params.id);
 
+    // Practical 10 Supplementary: Send delete response immediately, log timestamp, then emit event
+    console.log(`[API] Response sent at ${new Date().toISOString()}`);
     res.status(200).json(task);
+    taskEvents.emit('task-deleted', task);
   } catch (error) {
     next(error);
   }

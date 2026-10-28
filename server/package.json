@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "benchmark": "node benchmark.js"
+    "benchmark": "node benchmark.js",
+    "demo:events": "node demo-events.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

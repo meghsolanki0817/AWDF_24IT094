@@ -9,6 +9,7 @@ function NavBar({ onThemeToggle, isDarkMode }) {
     { name: 'Projects', path: '/projects' },
     { name: 'Contact', path: '/contact' },
     { name: 'Tasks', path: '/tasks' },
+    { name: 'Async Events', path: '/jobs' },
     { name: 'Login', path: '/login' }
   ];
   
