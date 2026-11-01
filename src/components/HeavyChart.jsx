@@ -39,7 +39,7 @@ function HeavyChart({ data, title = 'Task & Performance Metrics Chart' }) {
           fontSize: '0.78rem',
           fontWeight: 600
         }}>
-          Chunk: HeavyChart.jsx
+          Chunk: HeavyChart
         </span>
       </div>
 
@@ -92,7 +92,7 @@ function HeavyChart({ data, title = 'Task & Performance Metrics Chart' }) {
         fontSize: '0.85rem',
         color: '#cbd5e1'
       }}>
-        💡 <strong>Performance Note:</strong> <code>HeavyChart.jsx</code> was split into its own chunk by Vite. It is only fetched when explicitly requested, preventing heavy chart logic and rendering math from slowing down the initial page load.
+        💡 <strong>Performance Note:</strong> <code>HeavyChart</code> was split into its own chunk by Vite. It is only fetched when explicitly requested, preventing heavy chart logic and rendering math from slowing down the initial page load.
       </div>
     </div>
   );

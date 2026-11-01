@@ -253,7 +253,7 @@ function Tasks() {
           style={{ background: '#059669', padding: '12px 24px', cursor: 'pointer' }}
           onClick={() => setShowHeavyChart((prev) => !prev)}
         >
-          {showHeavyChart ? 'Hide Heavy Chart' : '📈 View HeavyChart.jsx (Lazy-Loaded)'}
+          {showHeavyChart ? 'Hide Heavy Chart' : '📈 View Heavy Chart (Lazy-Loaded)'}
         </button>
       </div>
 
