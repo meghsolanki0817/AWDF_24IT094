@@ -9,7 +9,6 @@ function Footer({ email }) {
           <p>Enrollment No.: 24IT094</p>
           <a href={`mailto:${email}`}>{email}</a>
         </div>
-        <p className="copyright">Copyright ©️ 2026 Megh Solanki</p>
       </div>
     </footer>
   );
