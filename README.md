@@ -20,9 +20,9 @@ A modern full-stack web application built with **React, Vite, Node.js, Express, 
 - **GitHub Integration:** Projects page integrating GitHub Public REST API with live search and retry mechanisms.
 - **Full-Stack Task Manager:** MongoDB-backed task CRUD with optimistic React UI updates and instant in-memory fallback.
 - **AI-Powered Task Assistant:** One-click task description generator using server-side OpenAI/Gemini with resilient graceful degradation, suggested priority levels, estimated deadlines, and mandatory AI disclaimer.
-- **In-Memory Caching (Practical 9):** High-speed server caching with `node-cache` (60s TTL), automatic write invalidation, and live debug stats.
-- **Event-Driven Processing (Practical 10):** Decoupled asynchronous background processing using Node.js native `EventEmitter` and Server-Sent Events (SSE) job monitoring console.
-- **Performance Optimization (Practical 8):** Route-based dynamic code-splitting with `React.lazy()` and `<Suspense>`, on-demand heavy components (`HeavyChart.jsx`, `TaskAnalytics.jsx`), and `React.memo` memoization.
+- **In-Memory Caching:** High-speed server caching with `node-cache` (60s TTL), automatic write invalidation, and live debug stats.
+- **Event-Driven Processing:** Decoupled asynchronous background processing using Node.js native `EventEmitter` and Server-Sent Events (SSE) job monitoring console.
+- **Performance Optimization:** Route-based dynamic code-splitting with `React.lazy()` and `<Suspense>`, on-demand heavy components (`HeavyChart.jsx`, `TaskAnalytics.jsx`), and `React.memo` memoization.
 - **Automated CI/CD Pipeline:** GitHub Actions workflow running automated Jest & Supertest API tests on every push and pull request to `main`.
 - **Containerization Support:** Production-ready `Dockerfile` and `docker-compose.yml` for multi-container full-stack deployment.
 
@@ -82,7 +82,7 @@ WEBDEV/
 
 ---
 
-## Practical 8: Performance Optimization & Lazy Loading
+## Performance Optimization & Lazy Loading
 
 ### Before vs. After Optimization (Vite Build Analysis)
 
