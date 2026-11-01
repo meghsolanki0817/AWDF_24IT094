@@ -34,3 +34,5 @@ export const getDispatchedNotifications = () => request('/jobs/notifications');
 export const getEventLogs = () => request('/events/logs');
 export const simulateEventError = () => request('/events/simulate-error', { method: 'POST' });
 export const clearEventLogs = () => request('/events/clear-logs', { method: 'POST' });
+export const generateAiDescription = (title) => request('/api/ai/generate-description', { method: 'POST', body: JSON.stringify({ title }) });
+export const getAiStatus = () => request('/api/ai/status');

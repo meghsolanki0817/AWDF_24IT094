@@ -11,6 +11,8 @@
     "preview": "vite preview",
     "start:server": "node server/index.js",
     "install-server": "cd server && npm install",
+    "test": "npm --prefix server test",
+    "test:server": "cd server && npm test",
     "benchmark:cache": "node server/benchmark.js",
     "demo:events": "node server/demo-events.js"
   },

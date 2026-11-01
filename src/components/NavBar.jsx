@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 function NavBar({ onThemeToggle, isDarkMode }) {
   const menuItems = [
     { name: 'Home', path: '/' },
-    { name: 'Dashboard', path: '/dashboard' },
     { name: 'Tasks', path: '/tasks' },
     { name: 'Async Events', path: '/jobs' },
     { name: 'Projects', path: '/projects' },

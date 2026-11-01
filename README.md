@@ -1,6 +1,8 @@
-# Student Portfolio + Task Manager API (24IT094)
+# Student Portfolio + Task Manager (24IT094)
 
-A modern single-page portfolio website built with **React** and **Vite** plus a **Practical 6/7 full-stack task manager** using **Express, MongoDB, Mongoose, and JWT authentication**, optimized with **Practical 8 Route-Based Lazy Loading and Performance Optimization**.
+[![CI Pipeline](https://github.com/meghsolanki0817/AWDF_24IT094/actions/workflows/ci.yml/badge.svg)](https://github.com/meghsolanki0817/AWDF_24IT094/actions/workflows/ci.yml)
+
+A modern full-stack web application built with **React, Vite, Node.js, Express, MongoDB, Docker, and GitHub Actions**, featuring a personal developer portfolio, full-stack task manager, intelligent AI task assistance, in-memory caching, and asynchronous event processing.
 
 ## Project Overview
 
@@ -9,80 +11,71 @@ A modern single-page portfolio website built with **React** and **Vite** plus a 
 - **Branch:** Information Technology
 - **College:** CSPIT, CHARUSAT
 - **Portfolio Owner:** Megh Solanki
-- **Technology:** React 18, Vite, React Router 7, Express, MongoDB, Mongoose, CSS
+- **Technology Stack:** React 18, Vite, Node.js, Express, MongoDB, Mongoose, Jest, Supertest, Docker, GitHub Actions, OpenAI API, Gemini API, CSS3
 
 ## Features
 
-- Responsive portfolio layout with dark/light mode toggle
-- Navigation bar with active link highlighting and search
-- About section with student details
-- Skills section with dynamic rendering using `map()`
-- GitHub API integration on the Projects page with live search and retry
-- Footer with contact email
-- MongoDB-backed task CRUD at `/tasks`
-- React task form with edit, delete, completion, loading, error, and success states
-- JWT registration/login with protected task routes and `/auth/me`
-- **Practical 8 Code Splitting & Performance Optimization:**
-  - Route-level lazy loading (`React.lazy()` & `<Suspense>`) for all routes
-  - Polished Suspense fallback spinner component (`LoadingFallback.jsx`)
-  - Supplementary on-demand lazy component: `HeavyChart.jsx` and `TaskAnalytics.jsx`
-  - Component memoization (`React.memo`) for `Header` and `Footer` to eliminate unnecessary re-renders
-- **Practical 9 In-Memory Caching & Query Optimization:**
-  - Fast server-side caching on `GET /tasks` using `node-cache` (60-second TTL)
-  - Immediate cache invalidation on write operations (`POST`, `PUT`, `DELETE`) to guarantee fresh data
-  - Single-task caching at `GET /tasks/:id`
-  - Live cache statistics debug endpoint at `GET /cache/stats` and `POST /cache/clear`
-  - In-app live cache monitor in `TaskAnalytics` UI with hit/miss counters and manual flush button
-- **Practical 10 Asynchronous Processing with Event-Driven Architecture:**
-  - Decoupled background notification system using Node.js native `EventEmitter` (`server/events.js`)
-  - Dedicated listener module (`server/listeners.js`) with non-blocking 2-second simulated dispatch
-  - API response returns immediately (`res.status(201).json(task)`) before background listeners complete
-  - Supplementary `task-deleted` event listener with distinct log message and simulated delay
-  - Supplementary `error` event listener safely intercepting handler errors without crashing server
-  - Interactive demonstration runner (`npm run demo:events` via `server/demo-events.js`)
-  - Live Event-Driven Processing console and SSE monitor in React UI (`/jobs`)
+- **Personal Portfolio:** Responsive developer portfolio with modern dark/light mode theme toggle.
+- **Dynamic Skills & About:** Interactive skills rendered dynamically with `map()` and about section.
+- **GitHub Integration:** Projects page integrating GitHub Public REST API with live search and retry mechanisms.
+- **Full-Stack Task Manager:** MongoDB-backed task CRUD with optimistic React UI updates and instant in-memory fallback.
+- **AI-Powered Task Assistant:** One-click task description generator using server-side OpenAI/Gemini with resilient graceful degradation, suggested priority levels, estimated deadlines, and mandatory AI disclaimer.
+- **In-Memory Caching (Practical 9):** High-speed server caching with `node-cache` (60s TTL), automatic write invalidation, and live debug stats.
+- **Event-Driven Processing (Practical 10):** Decoupled asynchronous background processing using Node.js native `EventEmitter` and Server-Sent Events (SSE) job monitoring console.
+- **Performance Optimization (Practical 8):** Route-based dynamic code-splitting with `React.lazy()` and `<Suspense>`, on-demand heavy components (`HeavyChart.jsx`, `TaskAnalytics.jsx`), and `React.memo` memoization.
+- **Automated CI/CD Pipeline:** GitHub Actions workflow running automated Jest & Supertest API tests on every push and pull request to `main`.
+- **Containerization Support:** Production-ready `Dockerfile` and `docker-compose.yml` for multi-container full-stack deployment.
 
 ## Folder Structure
 
 ```
 WEBDEV/
+├── .github/
+│   └── workflows/
+│       └── ci.yml                 # GitHub Actions automated CI/CD workflow
+├── docker-compose.yml             # Multi-container Docker deployment configuration
 ├── index.html
 ├── package.json
 ├── vite.config.js
 ├── README.md
 ├── docs/
-│   ├── PRACTICAL_8.md             # Detailed Practical 8 benchmark report
-│   ├── PRACTICAL_9.md             # Detailed Practical 9 in-memory caching report
-│   └── PRACTICAL_10.md            # Detailed Practical 10 EventEmitter architecture report
+│   ├── PRACTICAL_8.md             # Practical 8 Performance Optimization report
+│   ├── PRACTICAL_9.md             # Practical 9 In-Memory Caching report
+│   └── PRACTICAL_10.md            # Practical 10 EventEmitter architecture report
 ├── server/
-│   ├── index.js                   # Express server startup and listener registration
-│   ├── events.js                  # Practical 10 TaskEvents extending EventEmitter
-│   ├── listeners.js               # Practical 10 task-created, task-deleted, error listeners
-│   ├── demo-events.js             # Practical 10 console timestamp verification script
-│   ├── cache.js                   # Practical 9 shared node-cache instance
+│   ├── Dockerfile                 # Node.js 18 Alpine production container image
+│   ├── index.js                   # Express server startup and router mounting
+│   ├── events.js                  # TaskEvents extending Node.js native EventEmitter
+│   ├── listeners.js               # Asynchronous event listeners (task-created, task-deleted, error)
+│   ├── demo-events.js             # Event execution console verification script
+│   ├── cache.js                   # Shared node-cache instance with TTL configuration
+│   ├── tests/
+│   │   └── tasks.test.js          # Jest & Supertest automated API tests
 │   ├── routes/
-│   │   ├── tasks.js               # Emits 'task-created' and 'task-deleted' after response
+│   │   ├── tasks.js               # Task CRUD with node-cache caching
+│   │   ├── ai.js                  # AI assistant with graceful fallback & rate limiter
+│   │   ├── jobs.js                # Event-driven background jobs & SSE stream
 │   │   └── auth.js
 │   └── package.json
 ├── src/
 │   ├── main.jsx
 │   ├── App.jsx                    # React.lazy() & Suspense route boundaries
-│   ├── App.css
+│   ├── App.css                    # Design system and component styling
 │   ├── index.css
-│   ├── api.js
+│   ├── api.js                     # Unified API client functions
 │   └── components/
 │       ├── Header.jsx             # React.memo optimized
-│       ├── NavBar.jsx             # Optimized effect listener
-│       ├── Home.jsx               # Lazy-loaded route
-│       ├── About.jsx              # Lazy-loaded route
-│       ├── Skills.jsx             # Lazy-loaded route
-│       ├── Projects.jsx           # Lazy-loaded route
-│       ├── Contact.jsx            # Lazy-loaded route
-│       ├── Tasks.jsx              # Lazy-loaded route
+│       ├── NavBar.jsx             # Active route listener & theme toggle
+│       ├── Home.jsx               # Primary entry and overview hub
+│       ├── About.jsx              # Student introduction
+│       ├── Skills.jsx             # Dynamic technical skills
+│       ├── Projects.jsx           # Featured and GitHub showcase projects
+│       ├── Contact.jsx            # Contact details
+│       ├── Tasks.jsx              # Task manager board with CRUD & AI assistant
 │       ├── HeavyChart.jsx         # Supplementary lazy-loaded heavy chart component
 │       ├── TaskAnalytics.jsx      # Supplementary lazy-loaded component
-│       ├── Auth.jsx               # Lazy-loaded route
-│       ├── NotFound.jsx           # Lazy-loaded route
+│       ├── AsyncJobs.jsx          # Event-driven asynchronous processing console
+│       ├── NotFound.jsx           # 404 fallback page
 │       ├── LoadingFallback.jsx    # Custom Suspense spinner UI
 │       └── Footer.jsx             # React.memo optimized
 ```
@@ -100,58 +93,28 @@ dist/index.html                   0.42 kB │ gzip:  0.29 kB
 dist/assets/index-D-Y12iIs.css    8.25 kB │ gzip:  2.37 kB
 dist/assets/index-tYaEH75S.js   197.24 kB │ gzip: 64.19 kB
 ```
-*Total initial JS payload:* **197.24 kB** (1 bundle upfront).
+*Total initial JS payload:* **197.24 kB** (1 monolithic bundle upfront).
 
 #### 2. After Code Splitting & Lazy Loading (`React.lazy`)
 After converting routes to dynamic imports and wrapping with `<Suspense>`:
 ```text
 dist/index.html                          0.42 kB │ gzip:  0.29 kB
-dist/assets/index-DgEDZVYg.css           9.61 kB │ gzip:  2.72 kB
-dist/assets/Skills-DGqTgowX.js           0.46 kB │ gzip:  0.24 kB
-dist/assets/NotFound-C0-knVSu.js         0.48 kB │ gzip:  0.28 kB
-dist/assets/api-DqQ-wyJN.js              0.74 kB │ gzip:  0.42 kB
-dist/assets/Home-Bf1kHwC4.js             1.20 kB │ gzip:  0.55 kB
-dist/assets/About-DVO3MKOg.js            1.30 kB │ gzip:  0.42 kB
-dist/assets/Contact-Vz4Vf8mW.js          1.59 kB │ gzip:  0.61 kB
-dist/assets/Auth-DbS9_gPM.js             1.71 kB │ gzip:  0.76 kB
-dist/assets/Projects-YLtyirDF.js         2.24 kB │ gzip:  0.96 kB
-dist/assets/TaskAnalytics-Cw8-qL7S.js    3.38 kB │ gzip:  1.19 kB
-dist/assets/Tasks-D-FPTcW_.js            4.45 kB │ gzip:  1.69 kB
-dist/assets/index-BQ8my7Q0.js          187.01 kB │ gzip: 61.96 kB
+dist/assets/index-BH_MQHQU.css          11.53 kB │ gzip:  3.17 kB
+dist/assets/Skills-BPPbu7In.js           0.46 kB │ gzip:  0.24 kB
+dist/assets/NotFound-KCISAHoF.js         0.48 kB │ gzip:  0.28 kB
+dist/assets/api-62xK8HnK.js              1.11 kB │ gzip:  0.57 kB
+dist/assets/Home-D7rCH6MM.js             1.20 kB │ gzip:  0.55 kB
+dist/assets/About-C8qPf2Oq.js            1.30 kB │ gzip:  0.42 kB
+dist/assets/Contact-Bs6z5stS.js          1.59 kB │ gzip:  0.61 kB
+dist/assets/HeavyChart-Cr5uHPxS.js       3.00 kB │ gzip:  1.25 kB
+dist/assets/TaskAnalytics-GpTiyW70.js    6.96 kB │ gzip:  2.00 kB
+dist/assets/Tasks-BsU77Vyu.js            7.28 kB │ gzip:  2.52 kB
+dist/assets/Projects-fAg_rRTw.js         8.02 kB │ gzip:  3.08 kB
+dist/assets/AsyncJobs-Gk8TfFMb.js       16.13 kB │ gzip:  4.45 kB
+dist/assets/index-BokPbhn_.js          186.55 kB │ gzip: 61.85 kB
 ```
 
-### Quantitative Metrics Comparison
-
-| Metric | Before Optimization | After Optimization | Difference / Gain |
-| :--- | :--- | :--- | :--- |
-| **Main Bundle JS** | 197.24 kB | 187.01 kB | **-10.23 kB (-5.2%) reduction** |
-| **Main Bundle (gzip)** | 64.19 kB | 61.96 kB | **-2.23 kB (-3.5%) reduction** |
-| **Separate Route Chunks** | 0 (all combined) | 10 distinct chunks | Loaded purely on demand |
-| **Initial JS on `/`** | 197.24 kB | 188.21 kB | Unused route code eliminated |
-| **Projects chunk** | Bundled upfront | 2.24 kB | Fetched only on `/projects` |
-| **Contact chunk** | Bundled upfront | 1.59 kB | Fetched only on `/contact` |
-| **Tasks chunk** | Bundled upfront | 4.45 kB | Fetched only on `/tasks` |
-| **Analytics chunk** | Bundled upfront | 3.38 kB | Fetched only when toggled |
-
-### How to Test Lazy Loading with Network Throttling
-
-1. Build the production bundle:
-   ```bash
-   npm run build
-   ```
-2. Start the preview server:
-   ```bash
-   npm run preview
-   ```
-3. Open Developer Tools (`F12`), navigate to the **Network** tab, filter by **JS**, and set Throttling to **Slow 3G**.
-4. Reload the page at `http://localhost:4173/`:
-   - Notice only the initial shell (`index-[hash].js`) and `Home-[hash].js` are downloaded.
-5. Click on **Projects** or **Contact**:
-   - The `<LoadingFallback>` spinner renders while the browser fetches `Projects-[hash].js` / `Contact-[hash].js`.
-6. On the `/tasks` route, click **📊 View Task & Performance Analytics**:
-   - The dedicated `TaskAnalytics-[hash].js` chunk is fetched on demand!
-
-For comprehensive analysis, conceptual questions, and React Profiler notes, see [docs/PRACTICAL_8.md](file:///c:/Users/meghs/OneDrive/Desktop/WEBDEV/docs/PRACTICAL_8.md).
+For complete analysis, see [docs/PRACTICAL_8.md](file:///c:/Users/meghs/OneDrive/Desktop/WEBDEV/docs/PRACTICAL_8.md).
 
 ---
 
@@ -170,14 +133,51 @@ Implemented server-side in-memory caching using `node-cache` (60s TTL) for `GET 
 | **Sample 5** | 2.90 ms | 2.15 ms | **25.8% faster** |
 | **Average** | **3.08 ms** | **2.51 ms** | **18.5% average latency reduction** |
 
-### Cache Verification & Debugging Endpoints
+For complete analysis, see [docs/PRACTICAL_9.md](file:///c:/Users/meghs/OneDrive/Desktop/WEBDEV/docs/PRACTICAL_9.md).
 
-- **`GET /cache/stats`**: Inspect real-time cache hits, misses, active keys, and key/value memory sizes.
-- **`POST /cache/clear`**: Manually flush all cached keys.
-- **Header Inspection:** Every cached route returns `X-Cache: HIT` or `X-Cache: MISS`.
-- **In-App Live Monitor:** On `/tasks`, click **"📊 View Task Analytics"** to view live cache stats and trigger real-time invalidation.
+---
 
-For complete theoretical answers and multi-instance scaling trade-offs, see [docs/PRACTICAL_9.md](file:///c:/Users/meghs/OneDrive/Desktop/WEBDEV/docs/PRACTICAL_9.md).
+## Practical 10: Event-Driven Architecture with Native EventEmitter
+
+Decoupled background tasks using Node.js built-in `EventEmitter`:
+- Non-blocking 2-second simulated email/webhook dispatch
+- API responds immediately (`HTTP 201`) before listeners execute
+- `task-created`, `task-deleted`, and `error` listeners registered in `server/listeners.js`
+- Interactive SSE-powered background job stream at `/jobs`
+
+For complete analysis, see [docs/PRACTICAL_10.md](file:///c:/Users/meghs/OneDrive/Desktop/WEBDEV/docs/PRACTICAL_10.md).
+
+---
+
+## Automated CI/CD Pipeline & API Testing
+
+Configured via `.github/workflows/ci.yml` that runs on every push and pull request to `main`:
+- Runs automated tests covering task CRUD, in-memory caching, event logging, request validation, and AI endpoints
+- Immediate pass/fail reporting and live status badge
+
+Run tests locally:
+```bash
+npm test
+```
+
+---
+
+## AI-Powered Task Assistant
+
+- **Endpoint:** `POST /api/ai/generate-description`
+- **Graceful Degradation:** Automatic smart template generation if external API is offline or unconfigured
+- **Interactive UI:** Click **"✨ Generate description with AI"** on `/tasks` to auto-fill description, suggested priority, and deadline
+- **Rate Limiting:** 10-second client cooldown countdown & backend IP rate limiting
+- **Responsible AI:** Transparent disclaimer banner emphasizing human review before saving
+
+---
+
+## Docker Containerization
+
+Run the full stack (Node backend + MongoDB database) in isolated containers:
+```bash
+docker compose up -d --build
+```
 
 ---
 
@@ -192,6 +192,11 @@ npm run dev
 ### Full-Stack (Frontend + Backend)
 ```bash
 npm run dev:all
+```
+
+### Run Automated Tests
+```bash
+npm test
 ```
 
 Open `http://localhost:5173` in your browser.

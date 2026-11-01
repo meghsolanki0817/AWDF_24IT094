@@ -8,14 +8,12 @@ import LoadingFallback from './components/LoadingFallback.jsx';
 
 // Practical 8: Route-based code splitting with React.lazy() dynamic imports
 const Home = lazy(() => import('./components/Home.jsx'));
-const Dashboard = lazy(() => import('./components/Dashboard.jsx'));
 const About = lazy(() => import('./components/About.jsx'));
 const Skills = lazy(() => import('./components/Skills.jsx'));
 const Projects = lazy(() => import('./components/Projects.jsx'));
 const Contact = lazy(() => import('./components/Contact.jsx'));
 const Tasks = lazy(() => import('./components/Tasks.jsx'));
 const AsyncJobs = lazy(() => import('./components/AsyncJobs.jsx'));
-const Auth = lazy(() => import('./components/Auth.jsx'));
 const NotFound = lazy(() => import('./components/NotFound.jsx'));
 
 const skillList = [
@@ -46,14 +44,12 @@ function App() {
         <Suspense fallback={<LoadingFallback message="Loading page component..." />}>
           <Routes>
             <Route path="/" element={<Home skills={skillList} />} />
-            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/about" element={<About />} />
             <Route path="/skills" element={<Skills skills={skillList} />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/jobs" element={<AsyncJobs />} />
-            <Route path="/login" element={<Navigate to="/tasks" replace />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

@@ -3,6 +3,7 @@ const express = require('express');
 const tasksRouter = require('./routes/tasks');
 const authRouter = require('./routes/auth');
 const jobsRouter = require('./routes/jobs');
+const aiRouter = require('./routes/ai');
 const logger = require('./middleware/logger');
 const validateContentType = require('./middleware/validateContentType');
 const errorHandler = require('./middleware/errorHandler');
@@ -80,6 +81,8 @@ app.post('/events/clear-logs', (req, res) => {
 app.use('/auth', validateContentType, authRouter);
 // Practical 10: Event-Driven Background Jobs & SSE Stream
 app.use('/jobs', jobsRouter);
+// AI-Powered Task Assistant (OpenAI / Gemini API with Graceful Degradation)
+app.use('/api/ai', aiRouter);
 // Mount tasks router with content-type validation for POST/PUT
 app.use('/tasks', auth, validateContentType, (req, res, next) => {
   if (req.method === 'POST' || req.method === 'PUT') return validateTask(req, res, next);
@@ -94,11 +97,16 @@ app.use((req, res, next) => {
 // Global error handler
 app.use(errorHandler);
 
-mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 2000 })
-  .then(() => {
-    app.listen(PORT, () => console.log(`Task Manager API listening on port ${PORT} with MongoDB`));
-  })
-  .catch((error) => {
-    console.warn(`MongoDB unavailable (${error.message}). Starting in temporary in-memory mode.`);
-    app.listen(PORT, () => console.log(`Task Manager API listening on port ${PORT} in memory mode`));
-  });
+// Only connect to MongoDB and start listening if executed directly (not when imported in tests)
+if (require.main === module) {
+  mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 2000 })
+    .then(() => {
+      app.listen(PORT, () => console.log(`Task Manager API listening on port ${PORT} with MongoDB`));
+    })
+    .catch((error) => {
+      console.warn(`MongoDB unavailable (${error.message}). Starting in temporary in-memory mode.`);
+      app.listen(PORT, () => console.log(`Task Manager API listening on port ${PORT} in memory mode`));
+    });
+}
+
+module.exports = app;

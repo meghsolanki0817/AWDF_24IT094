@@ -1,5 +1,5 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
-import { createTask, deleteTask, getTasks, updateTask } from '../api.js';
+import { createTask, deleteTask, getTasks, updateTask, generateAiDescription } from '../api.js';
 
 // Supplementary Problem: Lazy loading heavy components on demand
 const TaskAnalytics = lazy(() => import('./TaskAnalytics.jsx'));
@@ -18,6 +18,20 @@ function Tasks() {
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showHeavyChart, setShowHeavyChart] = useState(false);
 
+  // AI-Powered Task Description & Suggestions
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiSuggestion, setAiSuggestion] = useState(null);
+  const [aiCooldown, setAiCooldown] = useState(0);
+  const [aiError, setAiError] = useState('');
+
+  // Supplementary Problem: Rate Limiting countdown timer
+  useEffect(() => {
+    if (aiCooldown > 0) {
+      const timer = setTimeout(() => setAiCooldown((prev) => prev - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [aiCooldown]);
+
   const loadTasks = async () => {
     setLoading(true);
     setError('');
@@ -33,6 +47,39 @@ function Tasks() {
   useEffect(() => {
     loadTasks();
   }, []);
+
+  // Practical CO6: Call secure backend AI endpoint
+  const handleGenerateAiDescription = async () => {
+    if (!form.title.trim()) {
+      setError('Please enter a task title first so the AI can generate a relevant description.');
+      return;
+    }
+    if (aiCooldown > 0) return;
+
+    setAiLoading(true);
+    setAiError('');
+    setError('');
+
+    try {
+      const result = await generateAiDescription(form.title.trim());
+      // Populate the form description as an editable suggestion
+      setForm((prev) => ({
+        ...prev,
+        description: result.description || prev.description
+      }));
+      setAiSuggestion(result);
+      setAiCooldown(10); // 10-second client-side cooldown
+      setNotice(
+        result.fallback
+          ? 'ℹ️ Smart fallback description applied (Graceful degradation active).'
+          : '✨ AI description generated successfully! You can review or edit it below.'
+      );
+    } catch (err) {
+      setAiError(err.message || 'Failed to generate AI description.');
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -52,6 +99,7 @@ function Tasks() {
       }
       setForm(emptyForm);
       setEditingId(null);
+      setAiSuggestion(null);
       await loadTasks();
     } catch (requestError) {
       setError(requestError.message);
@@ -64,6 +112,7 @@ function Tasks() {
     setEditingId(task._id);
     setForm({ title: task.title, description: task.description || '' });
     setNotice('');
+    setAiSuggestion(null);
   };
 
   const toggleTask = async (task) => {
@@ -94,20 +143,90 @@ function Tasks() {
       <div className="section-heading">
         <p className="section-label">Task Management</p>
         <h2>Task board</h2>
-        <p className="tasks-intro">A full-stack task list backed by Express, MongoDB, and synchronized React state.</p>
+        <p className="tasks-intro">A full-stack task list backed by Express, MongoDB, and AI-powered task assistance.</p>
       </div>
       <form className="task-form" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="task-title">Title</label>
-          <input id="task-title" value={form.title} onChange={(event) => setForm({ ...form, title: event.target.value })} placeholder="What needs doing?" required />
+          <div className="form-label-row">
+            <label htmlFor="task-title" style={{ margin: 0 }}>Title</label>
+            <button
+              type="button"
+              className="ai-generate-btn"
+              onClick={handleGenerateAiDescription}
+              disabled={aiLoading || aiCooldown > 0}
+              title="Auto-generate an actionable task description using AI"
+            >
+              {aiLoading ? (
+                <>⏳ Generating with AI...</>
+              ) : aiCooldown > 0 ? (
+                <>⏳ Wait {aiCooldown}s</>
+              ) : (
+                <>✨ Generate description with AI</>
+              )}
+            </button>
+          </div>
+          <input
+            id="task-title"
+            value={form.title}
+            onChange={(event) => setForm({ ...form, title: event.target.value })}
+            placeholder="e.g. Implement Docker containerization or Fix navigation bug"
+            required
+          />
         </div>
+
         <div className="form-group">
           <label htmlFor="task-description">Description</label>
-          <textarea id="task-description" rows="3" value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} placeholder="Add useful context" />
+          <textarea
+            id="task-description"
+            rows="3"
+            value={form.description}
+            onChange={(event) => setForm({ ...form, description: event.target.value })}
+            placeholder="Add context manually or click 'Generate description with AI' above"
+          />
         </div>
+
+        {/* AI Suggestion Metadata Card & Disclaimer */}
+        {aiSuggestion && (
+          <div className={`ai-suggestion-box ${aiSuggestion.fallback ? 'ai-suggestion-box--fallback' : 'ai-suggestion-box--live'}`}>
+            <div className="ai-suggestion-header">
+              <span className="ai-badge">
+                {aiSuggestion.fallback ? '🛡️ Graceful Fallback Mode' : '✨ AI-Generated Suggestion'}
+              </span>
+              <span className="ai-provider-tag">{aiSuggestion.provider}</span>
+            </div>
+
+            <div className="ai-meta-grid">
+              {aiSuggestion.suggestedPriority && (
+                <div className="ai-meta-item">
+                  <span className="ai-meta-label">Suggested Priority:</span>
+                  <span className={`priority-pill priority-pill--${aiSuggestion.suggestedPriority.toLowerCase()}`}>
+                    {aiSuggestion.suggestedPriority}
+                  </span>
+                </div>
+              )}
+              {aiSuggestion.suggestedDeadline && (
+                <div className="ai-meta-item">
+                  <span className="ai-meta-label">Estimated Deadline:</span>
+                  <span className="ai-deadline-val">{aiSuggestion.suggestedDeadline}</span>
+                </div>
+              )}
+            </div>
+
+            <p className="ai-disclaimer">
+              ⚠️ <strong>Disclaimer:</strong> {aiSuggestion.disclaimer || 'This suggestion was generated by AI. Please review, edit, or customize it above before saving.'}
+            </p>
+          </div>
+        )}
+
+        {aiError && (
+          <div className="message-card message-card--error">
+            {aiError}
+          </div>
+        )}
+
         <div className="task-form-actions">
           <button className="submit-btn" type="submit" disabled={saving}>{saving ? 'Saving...' : editingId ? 'Update task' : 'Create task'}</button>
-          {editingId && <button className="cancel-btn" type="button" onClick={() => { setEditingId(null); setForm(emptyForm); }}>Cancel</button>}
+          {editingId && <button className="cancel-btn" type="button" onClick={() => { setEditingId(null); setForm(emptyForm); setAiSuggestion(null); }}>Cancel</button>}
         </div>
       </form>
       {notice && <p className="task-notice">{notice}</p>}
